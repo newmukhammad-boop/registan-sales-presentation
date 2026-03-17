@@ -854,14 +854,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 72px 120px;
-    gap: 32px;
+    padding: 56px 120px;
+    gap: 24px;
   }
 
   .cmp-header { position: relative; z-index: 10; }
   .cmp-eyebrow { display: none; }
   .cmp-title {
-    font-size: 60px; font-weight: 900; letter-spacing: -3px; line-height: 1;
+    font-size: 56px; font-weight: 900; letter-spacing: -3px; line-height: 1;
     color: #fff;
   }
   .cmp-title span { color: var(--yellow); }
@@ -870,25 +870,23 @@
   /* 3-column grid header */
   .cmp-grid {
     display: grid;
-    grid-template-columns: 320px 1fr 1fr;
+    grid-template-columns: 380px 1fr 1fr;
     gap: 0;
     position: relative; z-index: 10;
     border-radius: 20px;
     overflow: hidden;
   }
 
-  .cmp-grid-head {
-    display: contents;
-  }
+  .cmp-grid-head { display: contents; }
 
   .cmp-gh-empty {
     background: transparent;
-    padding: 18px 24px;
+    padding: 22px 28px;
   }
   .cmp-gh-others {
     background: rgba(0,0,0,0.3);
-    padding: 18px 32px;
-    font-size: 20px; font-weight: 800; color: rgba(255,255,255,0.4);
+    padding: 22px 36px;
+    font-size: 30px; font-weight: 800; color: rgba(255,255,255,0.4);
     text-align: center;
     border-bottom: 2px solid rgba(255,255,255,0.06);
   }
@@ -896,8 +894,8 @@
     background: rgba(255,222,89,0.15);
     border: 2px solid var(--yellow);
     border-bottom: none;
-    padding: 18px 32px;
-    font-size: 22px; font-weight: 900; color: var(--yellow);
+    padding: 22px 36px;
+    font-size: 33px; font-weight: 900; color: var(--yellow);
     text-align: center;
   }
 
@@ -905,15 +903,15 @@
   .cmp-r-crit {
     background: rgba(255,255,255,0.05);
     border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding: 16px 24px;
-    font-size: 18px; font-weight: 700; color: #fff;
-    display: flex; align-items: center; gap: 12px;
+    padding: 18px 28px;
+    font-size: 27px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 14px;
   }
   .cmp-r-others {
     background: rgba(0,0,0,0.25);
     border-bottom: 1px solid rgba(255,255,255,0.04);
-    padding: 16px 32px;
-    font-size: 17px; font-weight: 500;
+    padding: 18px 36px;
+    font-size: 26px; font-weight: 500;
     color: rgba(255,255,255,0.35);
     text-align: center;
     display: flex; align-items: center; justify-content: center;
@@ -923,9 +921,9 @@
     border-bottom: 1px solid rgba(255,222,89,0.1);
     border-left: 3px solid var(--yellow);
     border-right: 2px solid rgba(255,222,89,0.4);
-    padding: 16px 24px;
-    font-size: 17px; font-weight: 700; color: #fff;
-    display: flex; align-items: center; gap: 10px;
+    padding: 18px 28px;
+    font-size: 26px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 12px;
   }
   .cmp-r-reg.hot {
     background: rgba(255,222,89,0.15);
@@ -943,7 +941,7 @@
     background: rgba(0,0,0,0.2);
     padding: 14px 32px;
     text-align: center;
-    font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.2);
+    font-size: 23px; font-weight: 600; color: rgba(255,255,255,0.2);
   }
   .cmp-gf-reg {
     background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
@@ -951,12 +949,12 @@
     border-top: none;
     padding: 16px 32px;
     text-align: center;
-    font-size: 19px; font-weight: 900; color: #fff;
+    font-size: 29px; font-weight: 900; color: #fff;
     border-left: 3px solid var(--yellow);
   }
 
-  .cmp-yes  { color: #4ADE80; font-weight: 900; font-size: 20px; flex-shrink: 0; }
-  .cmp-star { color: var(--yellow); font-weight: 900; font-size: 20px; flex-shrink: 0; }
+  .cmp-yes  { color: #4ADE80; font-weight: 900; font-size: 30px; flex-shrink: 0; }
+  .cmp-star { color: var(--yellow); font-weight: 900; font-size: 30px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -1793,9 +1791,9 @@
         <div class="cmp-r-reg"><span class="cmp-yes">✓</span> 2-sinfdan choraklik — 200–500k</div>
 
         <!-- Row 4 -->
-        <div class="cmp-r-crit">🏊 Basseyn</div>
-        <div class="cmp-r-others">Deyarli hech birida yo'q</div>
-        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> Bor</div>
+        <div class="cmp-r-crit">📈 O'qituvchi malakasi tizimi</div>
+        <div class="cmp-r-others">Aniq tizim yo'q</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> HeadCoach — doimiy o'sish</div>
 
         <!-- Row 5 -->
         <div class="cmp-r-crit">🏹 Ot sporti & Kamondan otish</div>
@@ -1823,9 +1821,9 @@
         <div class="cmp-r-reg"><span class="cmp-yes">✓</span> 3-sinfdan + IELTS & SAT</div>
 
         <!-- Row 10 -->
-        <div class="cmp-r-crit">📈 O'qituvchi malakasi tizimi</div>
-        <div class="cmp-r-others">Aniq tizim yo'q</div>
-        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> HeadCoach — doimiy o'sish</div>
+        <div class="cmp-r-crit">🏊 Basseyn</div>
+        <div class="cmp-r-others">Deyarli hech birida yo'q</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> Bor</div>
 
         <!-- Footer -->
         <div class="cmp-gf-empty"></div>
