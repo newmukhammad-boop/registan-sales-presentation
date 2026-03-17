@@ -845,6 +845,118 @@
   .sb-feature-desc strong { color: var(--yellow); font-weight: 800; }
 
   .sb-right { display: none; }
+
+  /* ════════════════════════════════
+     SOLISHTIRMA SLAYD
+  ════════════════════════════════ */
+  #slide-cmp {
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 120px;
+    gap: 32px;
+  }
+
+  .cmp-header { position: relative; z-index: 10; }
+  .cmp-eyebrow { display: none; }
+  .cmp-title {
+    font-size: 60px; font-weight: 900; letter-spacing: -3px; line-height: 1;
+    color: #fff;
+  }
+  .cmp-title span { color: var(--yellow); }
+  .cmp-line { width: 52px; height: 4px; background: var(--yellow); border-radius: 2px; margin-top: 16px; }
+
+  /* 3-column grid header */
+  .cmp-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr 1fr;
+    gap: 0;
+    position: relative; z-index: 10;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .cmp-grid-head {
+    display: contents;
+  }
+
+  .cmp-gh-empty {
+    background: transparent;
+    padding: 18px 24px;
+  }
+  .cmp-gh-others {
+    background: rgba(0,0,0,0.3);
+    padding: 18px 32px;
+    font-size: 20px; font-weight: 800; color: rgba(255,255,255,0.4);
+    text-align: center;
+    border-bottom: 2px solid rgba(255,255,255,0.06);
+  }
+  .cmp-gh-reg {
+    background: rgba(255,222,89,0.15);
+    border: 2px solid var(--yellow);
+    border-bottom: none;
+    padding: 18px 32px;
+    font-size: 22px; font-weight: 900; color: var(--yellow);
+    text-align: center;
+  }
+
+  /* Body rows */
+  .cmp-r-crit {
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 16px 24px;
+    font-size: 18px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cmp-r-others {
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    padding: 16px 32px;
+    font-size: 17px; font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cmp-r-reg {
+    background: rgba(255,222,89,0.08);
+    border-bottom: 1px solid rgba(255,222,89,0.1);
+    border-left: 3px solid var(--yellow);
+    border-right: 2px solid rgba(255,222,89,0.4);
+    padding: 16px 24px;
+    font-size: 17px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .cmp-r-reg.hot {
+    background: rgba(255,222,89,0.15);
+    border-right: 2px solid rgba(255,222,89,0.6);
+  }
+
+  /* Last row no border */
+  .cmp-grid > *:nth-last-child(-n+3) {
+    border-bottom: none;
+  }
+
+  /* Footer */
+  .cmp-gf-empty { background: transparent; }
+  .cmp-gf-others {
+    background: rgba(0,0,0,0.2);
+    padding: 14px 32px;
+    text-align: center;
+    font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.2);
+  }
+  .cmp-gf-reg {
+    background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+    border: 2px solid #22c55e;
+    border-top: none;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 19px; font-weight: 900; color: #fff;
+    border-left: 3px solid var(--yellow);
+  }
+
+  .cmp-yes  { color: #4ADE80; font-weight: 900; font-size: 20px; flex-shrink: 0; }
+  .cmp-star { color: var(--yellow); font-weight: 900; font-size: 20px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -1199,7 +1311,7 @@
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🏫</div>
               <div class="sb-feature-title">24 tagacha o'quvchi — kichik sinf xonalari</div></div>
-              <div class="sb-feature-desc">Har bir o'quvchi o'qituvchining <strong>to'liq diqqatini</strong> oladi. Kichik guruh bolaning savolini berishga, fikr yuritishga va <strong>o'z sur'atida rivojlanishiga</strong> imkon beradi — ommaviy maktablarda bu noyob afzallik.</div>
+              <div class="sb-feature-desc">Har bir o'quvchi o'qituvchining <strong>to'liq diqqatini</strong> oladi. Kichik guruh bolaning savolini berishga, fikr yuritishga va <strong>o'z sur'atida rivojlanishiga</strong> imkon beradi.</div>
           </div>
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🤝</div>
@@ -1336,7 +1448,7 @@
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🗺️</div>
               <div class="sb-feature-title">Maktabdan tashqari ekskursiya va sayohatlar</div></div>
-              <div class="sb-feature-desc">Darslik bilan bir xil darajada muhim narsa — ko'rganlar, his qilganlar. Ekskursiyalar bolaga <strong>real hayot bilan muloqot</strong> qilishni o'rgatadi, yangi odamlar bilan tanishtiради va dunyoqarashini kengaytiradi.</div>
+              <div class="sb-feature-desc">Darslik bilan bir xil darajada muhim narsa — ko'rganlar, his qilganlar. Ekskursiyalar bolaga <strong>real hayot bilan muloqot</strong> qilishni o'rgatadi, yangi odamlar bilan tanishtiradi va dunyoqarashini kengaytiradi.</div>
           </div>
         </div>
         <div class="sb-right">
@@ -1463,7 +1575,7 @@
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🔍</div>
               <div class="sb-feature-title">Bolalarni suhbat asosida saralab olish</div></div>
-              <div class="sb-feature-desc">Maktabimizga <strong>hamma emas, moslar</strong> qabul qilinadi. Bu sinfni <strong>bir xil motivatsiyali, o'qishga ishtiyoqli</strong> bolalar to'ldirishini ta'minlaydi — muhit o'zi o'stiradi.</div>
+              <div class="sb-feature-desc">Maktabimizga <strong>hamma emas, moslar</strong> qabul qilinadi. Bu sinf <strong>bir xil motivatsiyali, o'qishga ishtiyoqli</strong> bolalar bilan to'lishini ta'minlaydi. Farzandingizni muhitning o'zi o'stiradi.</div>
           </div>
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🔬</div>
@@ -1496,7 +1608,7 @@
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">✈️</div>
               <div class="sb-feature-title">3-sinfdan xorijiy davlatlarga sayohatlar</div></div>
-              <div class="sb-feature-desc">Bola uchun <strong>dunyoni ko'rish</strong> — eng katta ta'lim. Xorijiy sayohatlar bolaning <strong>tili, madaniyati va ufqini</strong> kengaytiradi, jasorat va mustaqillikni erta shakllantiradi.</div>
+              <div class="sb-feature-desc">Bola uchun <strong>dunyoni ko'rish</strong> — eng katta ta'lim. Xorijiy sayohatlar bolaning <strong>tili, madaniyati va dunyoqarashini</strong> kengaytiradi, jasorat va mustaqillikni erta shakllantiradi.</div>
           </div>
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🌱</div>
@@ -1534,7 +1646,7 @@
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🥋</div>
               <div class="sb-feature-title">O'g'il va qiz bolalar uchun taekwondo + qizlar gimnastikasi</div></div>
-              <div class="sb-feature-desc">Jismoniy tarbiya — yo'nalishga qarab. O'g'il bolalar <strong>taekwondo</strong> orqali kuch va intizom oladi, qiz bolalar <strong>gimnastika</strong> orqali plastika va muvozanat ustida ishlaydi. Har biri o'ziga mos sportda rivojlanadi.</div>
+              <div class="sb-feature-desc">O'g'il bolalar <strong>taekwondo</strong> orqali kuch va intizom oladi, qiz bolalar <strong>gimnastika</strong> orqali plastika va muvozanat ustida ishlaydi. Har biri o'ziga mos sportda rivojlanadi.</div>
           </div>
         </div>
         <div class="sb-right">
@@ -1628,7 +1740,7 @@
           <div class="sb-feature">
             <div class="sb-feature-top"><div class="sb-feature-icon">🏊</div>
               <div class="sb-feature-title">Suzish</div></div>
-              <div class="sb-feature-desc">Suzish — <strong>hayotiy ko'nikma</strong> va to'liq jismoniy rivojlanish. Nafas, koordinatsiya, bardoshlilik — hammasi bir vaqtda o'sadi. Bolangiz <strong>suvdan qo'rqmaydi,</strong> aksincha — sevadi.</div>
+              <div class="sb-feature-desc">Suzish — <strong>hayotiy ko'nikma</strong> va to'liq jismoniy rivojlanish. Nafas, koordinatsiya, bardoshlilik — hammasi bir vaqtda o'sadi. Bolangiz suvdan qo'rqmaydi — suvda chiniqadi.</div>
           </div>
           <div class="sb-feature" style="background:rgba(255,222,89,0.07); border-color:rgba(255,222,89,0.2);">
             <div class="sb-feature-top"><div class="sb-feature-icon">⭐</div>
@@ -1644,6 +1756,83 @@
           <div class="sb-right-desc">Boshqa maktablarda bu narsalarni alohida-alohida izlaysiz. Bu yerda — barchasi bir joyda.</div>
         </div>
       </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- ══ SOLISHTIRMA SLAYD ══ -->
+    <div class="slide" id="slide-cmp">
+      <div class="bg">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div>
+      </div>
+
+      <div class="cmp-header">
+        <div class="cmp-title">Registon <span>boshqalardan</span> nimasi bilan farq qiladi?</div>
+        <div class="cmp-line"></div>
+      </div>
+
+      <div class="cmp-grid">
+        <!-- Header -->
+        <div class="cmp-gh-empty"></div>
+        <div class="cmp-gh-others">😐 Boshqa maktablar</div>
+        <div class="cmp-gh-reg">⭐ Registon</div>
+
+        <!-- Row 1 -->
+        <div class="cmp-r-crit">📚 Chuqurlashtirilgan fanlar</div>
+        <div class="cmp-r-others">1–2 ta fan (asosan matematika)</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> Matematika, Ingliz, Rus, Arab tili, Informatika</div>
+
+        <!-- Row 2 -->
+        <div class="cmp-r-crit">👥 Sinfda o'quvchi soni</div>
+        <div class="cmp-r-others">15–25 ta o'quvchi</div>
+        <div class="cmp-r-reg"><span class="cmp-yes">✓</span> Maks. 24 ta, chuqur fanlarda 12 taga bo'linadi</div>
+
+        <!-- Row 3 -->
+        <div class="cmp-r-crit">🎓 Stipendiya</div>
+        <div class="cmp-r-others">Ko'pchiligida yo'q</div>
+        <div class="cmp-r-reg"><span class="cmp-yes">✓</span> 2-sinfdan choraklik — 200–500k</div>
+
+        <!-- Row 4 -->
+        <div class="cmp-r-crit">🏊 Basseyn</div>
+        <div class="cmp-r-others">Deyarli hech birida yo'q</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> Bor</div>
+
+        <!-- Row 5 -->
+        <div class="cmp-r-crit">🏹 Ot sporti & Kamondan otish</div>
+        <div class="cmp-r-others">Hech birida yo'q</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> Faqat Registonda</div>
+
+        <!-- Row 6 -->
+        <div class="cmp-r-crit">🧑‍⚕️ Psixolog & Logoped</div>
+        <div class="cmp-r-others">Aksariyatida yo'q</div>
+        <div class="cmp-r-reg"><span class="cmp-yes">✓</span> Doimiy xizmatda</div>
+
+        <!-- Row 7 -->
+        <div class="cmp-r-crit">📱 Ota-onalar ilovasi</div>
+        <div class="cmp-r-others">Ba'zilarida bor, ba'zilarida yo'q</div>
+        <div class="cmp-r-reg"><span class="cmp-yes">✓</span> Edu-School — baho, davomat, fidbek</div>
+
+        <!-- Row 8 -->
+        <div class="cmp-r-crit">✈️ Xorijga sayohat</div>
+        <div class="cmp-r-others">Yo'q</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> 3-sinfdan boshlab</div>
+
+        <!-- Row 9 -->
+        <div class="cmp-r-crit">🌍 Xalqaro olimpiadaga tayyorlov</div>
+        <div class="cmp-r-others">Ba'zilarida bor</div>
+        <div class="cmp-r-reg"><span class="cmp-yes">✓</span> 3-sinfdan + IELTS & SAT</div>
+
+        <!-- Row 10 -->
+        <div class="cmp-r-crit">📈 O'qituvchi malakasi tizimi</div>
+        <div class="cmp-r-others">Aniq tizim yo'q</div>
+        <div class="cmp-r-reg hot"><span class="cmp-star">★</span> HeadCoach — doimiy o'sish</div>
+
+        <!-- Footer -->
+        <div class="cmp-gf-empty"></div>
+        <div class="cmp-gf-others">O'rtacha daraja</div>
+        <div class="cmp-gf-reg">✓ Eng to'liq imkoniyat</div>
+      </div>
+
       <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
     </div>
 
