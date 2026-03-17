@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Registon Xususiy Maktabi — Taqdimot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue: #3876FF;
+    --yellow: #FFDE59;
+    --white: #FFFFFF;
+    --dark: #08121F;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden; background: #000;
+    font-family: 'Inter Tight', sans-serif;
+  }
+
+  /* ── SCALE ROOT ── */
+  .scale-root {
+    width: 1920px; height: 1080px;
+    position: absolute; top: 0; left: 0;
+    transform-origin: top left;
+    overflow: hidden;
+  }
+
+  /* ── SLIDES WRAPPER ── */
+  .slides-wrapper {
+    width: 100%; height: 1080px;
+    position: relative;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    width: 1920px; height: 1080px;
+    position: absolute; top: 0; left: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── NAV ── */
+  .nav-arrow {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    z-index: 200;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.5);
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+    user-select: none;
+  }
+  .nav-arrow:hover { background: rgba(255,255,255,0.16); color: #fff; }
+  .nav-arrow.left  { left: 36px; }
+  .nav-arrow.right { right: 36px; }
+
+  .nav-dots {
+    position: absolute;
+    bottom: 28px; left: 50%; transform: translateX(-50%);
+    z-index: 200;
+    display: flex; gap: 10px; align-items: center;
+  }
+
+  .nav-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .nav-dot.active {
+    background: var(--yellow);
+    transform: scale(1.4);
+  }
+
+  /* ════════════════════════════════
+     SHARED BG ELEMENTS
+  ════════════════════════════════ */
+  .bg { position: absolute; inset: 0; pointer-events: none; }
+
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 96px 96px;
+  }
+
+  .bg-glow-white {
+    position: absolute; border-radius: 50%;
+    background: #fff; filter: blur(240px); opacity: 0.06;
+  }
+
+  .bg-glow-yellow {
+    position: absolute; border-radius: 50%;
+    background: var(--yellow); filter: blur(200px); opacity: 0.13;
+    animation: floatY 7s ease-in-out infinite;
+  }
+  @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-30px)} }
+
+  .bg-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 4px; background: rgba(255,255,255,0.08);
+  }
+  .bottom-bar-fill {
+    height: 100%; background: var(--yellow);
+    transform: scaleX(0); transform-origin: left;
+  }
+  .slide.active .bottom-bar-fill {
+    animation: barFill 3.2s ease 0.3s forwards;
+  }
+  @keyframes barFill { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+
+  .page-num {
+    position: absolute; bottom: 24px; right: 72px; z-index: 20;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* Vertical divider */
+  .v-divider {
+    position: absolute; top: 80px; bottom: 80px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
+    z-index: 5;
+  }
+  .v-dot {
+    position: absolute; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--yellow);
+    box-shadow: 0 0 24px rgba(255,222,89,0.7);
+    z-index: 6;
+  }
+
+  /* ════════════════════════════════
+     SLIDE 1 — HERO
+  ════════════════════════════════ */
+  #slide-1 {
+    background: var(--blue);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+
+  #slide-1 .bg-glow-white { width:900px;height:900px;top:-300px;left:-300px; }
+  #slide-1 .bg-glow-yellow { width:700px;height:700px;bottom:-200px;right:-100px; }
+  #slide-1 .bg-ring-1 { width:1000px;height:1000px;top:-400px;right:-400px; }
+  #slide-1 .bg-ring-2 { width:600px;height:600px;top:-200px;right:-200px; }
+
+  .s1-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px; padding: 10px 28px;
+    font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--white); margin-bottom: 52px;
+  }
+  .s1-badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--yellow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .s1-wordmark { line-height: 0.88; text-align: center; }
+  .s1-line1 { display:block; font-size:182px; font-weight:900; letter-spacing:-9px; color:var(--white); }
+  .s1-line2 { display:block; font-size:182px; font-weight:700; letter-spacing:-9px; color:rgba(255,255,255,0.5); }
+  .s1-line3 { display:block; font-size:182px; font-weight:900; letter-spacing:-9px; color:var(--yellow); }
+
+  .s1-divider { width:260px; height:2px; background:var(--yellow); margin:40px auto; }
+
+  .s1-tagline {
+    font-size:22px; font-weight:400; line-height:1.75;
+    color:rgba(255,255,255,0.75); max-width:680px; text-align:center;
+  }
+
+  .s1-stats {
+    display:flex; margin-top:64px;
+    border:1px solid rgba(255,255,255,0.11); border-radius:20px; overflow:hidden;
+    background:rgba(255,255,255,0.06); backdrop-filter:blur(14px);
+  }
+  .s1-stat { padding:32px 60px; border-right:1px solid rgba(255,255,255,0.09); text-align:center; }
+  .s1-stat:last-child { border-right:none; }
+  .s1-stat-num { font-size:56px; font-weight:800; letter-spacing:-3px; color:var(--yellow); line-height:1; display:block; }
+  .s1-stat-label { font-size:13px; font-weight:500; color:rgba(255,255,255,0.4); margin-top:8px; display:block; }
+
+  /* ════════════════════════════════
+     SLIDE 2 — AGENDA
+  ════════════════════════════════ */
+  /* ── SLIDE 2 — AGENDA ── */
+  #slide-2 {
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #slide-2 .bg-glow-white { width:800px;height:800px;top:-200px;left:-200px; }
+  #slide-2 .bg-glow-yellow { width:500px;height:500px;bottom:-150px;right:200px; }
+
+  /* Big numbered list — full width, stacked */
+  .s2-wrap {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex;
+  }
+
+  /* Left col — title */
+  .s2-left {
+    width: 480px; flex-shrink: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 60px 80px 100px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .s2-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); margin-bottom: 20px;
+  }
+
+  .s2-title {
+    font-size: 88px; font-weight: 900; letter-spacing: -5px; line-height: 0.9;
+    color: var(--white);
+  }
+  .s2-title .yellow { color: var(--yellow); display: block; }
+
+  .s2-line { width:48px; height:3px; background:var(--yellow); border-radius:2px; margin-top:36px; }
+
+  /* Right col — items */
+  .s2-right {
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 60px 100px 60px 0;
+  }
+
+  /* Each agenda row: number huge on left, text right */
+  .s2-item {
+    display: flex; align-items: center;
+    padding: 0 60px;
+    min-height: 140px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+    cursor: default;
+    transition: background 0.3s;
+    overflow: hidden;
+  }
+  .s2-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+
+  .s2-item::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: rgba(255,255,255,0.05);
+    transition: width 0.4s ease;
+  }
+  .s2-item:hover::before { width: 100%; }
+
+  /* Giant number */
+  .s2-num {
+    font-size: 100px; font-weight: 900; letter-spacing: -6px; line-height: 1;
+    color: rgba(255,255,255,0.06);
+    width: 160px; flex-shrink: 0;
+    transition: color 0.3s;
+  }
+  .s2-item:hover .s2-num { color: rgba(255,222,89,0.15); }
+
+  .s2-icon {
+    font-size: 42px; line-height: 1; flex-shrink: 0;
+    width: 60px; text-align: center;
+    transition: transform 0.3s;
+  }
+  .s2-item:hover .s2-icon { transform: scale(1.15); }
+
+  .s2-text {
+    flex: 1;
+    font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 1.15;
+    color: rgba(255,255,255,0.85);
+    padding: 0 32px;
+    transition: color 0.3s;
+  }
+  .s2-item:hover .s2-text { color: var(--white); }
+
+  /* Yellow dot — right edge, appears on hover */
+  .s2-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--yellow); flex-shrink: 0;
+    opacity: 0; transform: scale(0);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .s2-item:hover .s2-dot { opacity: 1; transform: scale(1); }
+
+  /* ════════════════════════════════
+     SLIDE 3 — LOYIHA
+  ════════════════════════════════ */
+  #slide-3 {
+    background: var(--blue);
+    display: grid;
+    grid-template-columns: 760px 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  #slide-3 .bg-glow-white { width:900px;height:900px;top:-200px;left:-100px; }
+  #slide-3 .bg-glow-yellow { width:700px;height:700px;bottom:-200px;right:-100px; }
+
+  /* ── SLIDE 3 — 3 col ── */
+  #slide-3 {
+    display: grid !important;
+    grid-template-columns: 520px 1fr 380px !important;
+    grid-template-rows: 1fr !important;
+  }
+
+  /* LEFT — sarlavha + matn bloklari */
+  .s3-left {
+    grid-column: 1; grid-row: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 72px 56px 72px 96px;
+    position: relative; z-index: 10;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .s3-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 18px;
+  }
+
+  .s3-title {
+    font-size: 62px; font-weight: 900; letter-spacing: -3px; line-height: 1.05;
+    color: var(--white);
+  }
+  .s3-title .yellow { color: var(--yellow); }
+
+  .s3-divider { width: 44px; height: 3px; background: var(--yellow); border-radius: 2px; margin: 24px 0; }
+
+  .s3-blocks { display: flex; flex-direction: column; gap: 14px; }
+
+  .s3-block {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 20px 24px;
+    transition: background 0.3s;
+  }
+  .s3-block:hover { background: rgba(255,255,255,0.12); }
+
+  .s3-block-text {
+    font-size: 17px; font-weight: 400; line-height: 1.7;
+    color: rgba(255,255,255,0.82);
+  }
+  .s3-block-text strong { font-weight: 700; color: var(--white); }
+
+  /* CENTER — asoschi rasm */
+  .s3-center {
+    grid-column: 2; grid-row: 1;
+    position: relative; z-index: 10;
+    overflow: hidden;
+  }
+
+  .s3-founder-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  }
+
+  .s3-founder-name {
+    position: absolute;
+    bottom: 36px; left: 50%; transform: translateX(-50%);
+    text-align: center;
+    background: rgba(8,18,31,0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 16px 36px;
+    white-space: nowrap;
+  }
+
+  .s3-founder-name-text {
+    font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+    color: var(--white);
+  }
+
+  .s3-founder-name-sub {
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    margin-top: 5px;
+  }
+
+  /* RIGHT — raqamlar, o'ng chekkaga yopishgan */
+  .s3-right {
+    grid-column: 3; grid-row: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 72px 96px 72px 40px;
+    position: relative; z-index: 10;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    gap: 0;
+  }
+
+  .s3-stat-row {
+    display: flex; flex-direction: column;
+    padding: 26px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .s3-stat-row:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+
+  .s3-stat-num {
+    font-size: 64px; font-weight: 900; letter-spacing: -4px; line-height: 1;
+    color: var(--yellow);
+  }
+  .s3-stat-label {
+    font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.55);
+    margin-top: 6px;
+  }
+
+  /* ════════════════════════════════
+     SLIDE 4 — YOLLASH
+  ════════════════════════════════ */
+  #slide-4 {
+    background: var(--blue);
+    display: grid !important;
+    grid-template-columns: 600px 1fr !important;
+  }
+
+  #slide-4 .bg-glow-white { width:700px;height:700px;top:-200px;left:-200px; }
+  #slide-4 .bg-glow-yellow { width:600px;height:600px;bottom:-200px;right:-100px; }
+
+  .s4-left {
+    grid-column:1; grid-row:1;
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 80px 64px 80px 100px;
+    position:relative; z-index:10;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .s4-eyebrow {
+    font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase;
+    color:rgba(255,255,255,0.4); margin-bottom:24px;
+  }
+
+  .s4-title {
+    font-size:80px; font-weight:900; letter-spacing:-2px; line-height:1.0;
+    color:var(--white);
+  }
+  .s4-title .yellow { color:var(--yellow); }
+
+  .s4-divider { width:56px; height:3px; background:var(--yellow); border-radius:2px; margin:32px 0; }
+
+  .s4-desc {
+    font-size:20px; font-weight:400; line-height:1.7;
+    color:rgba(255,255,255,0.65); max-width:440px;
+  }
+
+  /* Steps list */
+  .s4-steps {
+    display:flex; flex-direction:column; gap:16px;
+    margin-top:40px;
+  }
+
+  .s4-step {
+    display:flex; align-items:center; gap:20px;
+    opacity:0;
+  }
+
+  #slide-4.active .s4-step:nth-child(1) { animation: s4In 0.55s cubic-bezier(0.22,1,0.36,1) 0.3s forwards; }
+  #slide-4.active .s4-step:nth-child(2) { animation: s4In 0.55s cubic-bezier(0.22,1,0.36,1) 0.45s forwards; }
+  #slide-4.active .s4-step:nth-child(3) { animation: s4In 0.55s cubic-bezier(0.22,1,0.36,1) 0.60s forwards; }
+  #slide-4.active .s4-step:nth-child(4) { animation: s4In 0.55s cubic-bezier(0.22,1,0.36,1) 0.75s forwards; }
+
+  @keyframes s4In {
+    from { opacity:0; transform:translateX(-20px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+
+  .s4-step-num {
+    width:60px; height:60px; border-radius:50%; flex-shrink:0;
+    background:rgba(255,222,89,0.15); border:2px solid rgba(255,222,89,0.5);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:900; color:var(--yellow);
+    transition:background 0.3s, border-color 0.3s;
+  }
+  .s4-step:hover .s4-step-num { background:rgba(255,222,89,0.28); border-color:var(--yellow); }
+
+  .s4-step-text {
+    font-size:26px; font-weight:700; letter-spacing:-0.5px;
+    color:var(--white); transition:color 0.3s;
+  }
+  .s4-step:hover .s4-step-text { color:var(--yellow); }
+
+  /* RIGHT — cards */
+  .s4-right {
+    grid-column:2; grid-row:1;
+    display:flex; align-items:center; justify-content:center;
+    padding: 60px 80px 60px 40px;
+    position:relative; z-index:10;
+    overflow:hidden;
+  }
+
+  .s4-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .s4-card {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 28px 36px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    cursor: default;
+  }
+
+  .s4-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--yellow);
+    border-radius: 4px 0 0 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .s4-card:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,222,89,0.35); transform: translateX(6px); }
+  .s4-card:hover::before { opacity: 1; }
+
+  /* connector line between cards */
+  .s4-card-connector {
+    width: 2px;
+    height: 18px;
+    background: linear-gradient(to bottom, rgba(255,222,89,0.5), rgba(255,222,89,0.1));
+    margin-left: 55px;
+    opacity: 0;
+  }
+
+  .s4-card.revealed           { animation: s4CardIn 0.55s cubic-bezier(0.22,1,0.36,1) forwards; }
+  .s4-card-connector.revealed { animation: s4FadeIn 0.3s ease forwards; }
+
+  /* Next button */
+  .s4-next-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 8px;
+    padding: 16px 32px;
+    background: rgba(255,222,89,0.12);
+    border: 2px solid rgba(255,222,89,0.5);
+    border-radius: 100px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--yellow);
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    align-self: flex-start;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .s4-next-btn.visible {
+    opacity: 1; pointer-events: all;
+    animation: s4FadeIn 0.4s ease forwards;
+  }
+  .s4-next-btn:hover { background: rgba(255,222,89,0.25); border-color: var(--yellow); transform: translateY(-2px); }
+  .s4-next-btn:active { transform: translateY(0); }
+  .s4-next-btn.done { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.3); pointer-events: none; }
+
+  @keyframes s4CardIn {
+    from { opacity:0; transform:translateX(30px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+  @keyframes s4FadeIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+  }
+
+  .s4-card-num {
+    width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255,222,89,0.12);
+    border: 2px solid rgba(255,222,89,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 900; color: var(--yellow);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .s4-card:hover .s4-card-num { background: rgba(255,222,89,0.25); border-color: var(--yellow); }
+
+  .s4-card-body { flex: 1; }
+
+  .s4-card-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,222,89,0.6); margin-bottom: 6px;
+  }
+
+  .s4-card-title {
+    font-size: 24px; font-weight: 700; letter-spacing: -0.5px;
+    color: var(--white);
+    transition: color 0.3s;
+  }
+  .s4-card:hover .s4-card-title { color: var(--yellow); }
+
+  .s4-card-arrow {
+    font-size: 18px; color: rgba(255,255,255,0.2);
+    transition: color 0.3s, transform 0.3s;
+    flex-shrink: 0;
+  }
+  .s4-card:hover .s4-card-arrow { color: var(--yellow); transform: translateX(4px); }
+
+  /* ════════════════════════════════
+     SLIDE 5 — O'QITISH TIZIMI
+  ════════════════════════════════ */
+  #slide-5 {
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .s5-header {
+    position: relative; z-index: 10;
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .s5-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); margin-bottom: 16px;
+  }
+
+  .s5-title {
+    font-size: 72px; font-weight: 900; letter-spacing: -4px; line-height: 1;
+    color: var(--white);
+  }
+  .s5-title .yellow { color: var(--yellow); }
+
+  .s5-line { width: 48px; height: 4px; background: var(--yellow); border-radius: 2px; margin: 20px auto 0; }
+
+  .s5-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 1400px;
+  }
+
+  .s5-card-top { grid-column: 1 / 3; }
+
+  .s5-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 40px 52px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: background 0.3s, border-color 0.3s, transform 0.25s, box-shadow 0.3s;
+  }
+
+  .s5-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--yellow);
+    border-radius: 6px 0 0 6px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .s5-card:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,222,89,0.45); transform: translateY(-5px); box-shadow: 0 20px 48px rgba(0,0,0,0.2); }
+  .s5-card:hover::before { opacity: 1; }
+
+  .s5-card.visible { animation: s5CardIn 0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+  @keyframes s5CardIn {
+    from { opacity:0; transform:translateY(28px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .s5-card-emoji { font-size: 56px; flex-shrink: 0; transition: transform 0.3s; }
+  .s5-card:hover .s5-card-emoji { transform: scale(1.15) rotate(-5deg); }
+
+  .s5-card-body { flex: 1; }
+
+  .s5-card-grade {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,222,89,0.65); margin-bottom: 8px;
+  }
+
+  .s5-card-name {
+    font-size: 36px; font-weight: 900; letter-spacing: -1.5px; line-height: 1;
+    color: var(--white);
+    transition: color 0.3s;
+  }
+  .s5-card:hover .s5-card-name { color: var(--yellow); }
+  .s5-card-top .s5-card-name { font-size: 44px; }
+
+  .s5-card-desc { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.45); margin-top: 8px; }
+
+  .s5-card-cta {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,222,89,0.15);
+    border: 2px solid rgba(255,222,89,0.4);
+    font-size: 22px; color: var(--yellow); font-weight: 900;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  }
+  .s5-card:hover .s5-card-cta { background: var(--yellow); color: var(--dark); border-color: var(--yellow); transform: translateX(5px); }
+
+
+  @keyframes riseIn {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes slideInR {
+    from { opacity:0; transform:translateX(40px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+
+  /* ════════════════════════════════
+     BOSHLANG'ICH MAKTAB SLAYDLARI
+  ════════════════════════════════ */
+  .sb-slide {
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 120px;
+  }
+  .sb-slide {
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 110px 120px 90px;
+  }
+
+  .sb-breadcrumb {
+    position: absolute; top: 44px; left: 120px;
+    display: flex; align-items: center; gap: 12px; z-index: 20;
+  }
+  .sb-breadcrumb-back {
+    font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); cursor: pointer;
+    background: none; border: none; font-family: inherit;
+    transition: color 0.2s;
+  }
+  .sb-breadcrumb-back:hover { color: var(--yellow); }
+  .sb-breadcrumb-sep { color: rgba(255,255,255,0.3); }
+  .sb-breadcrumb-cur { font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--yellow); }
+
+  .sb-counter {
+    position: absolute; top: 44px; right: 120px;
+    font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.5);
+    z-index: 20; letter-spacing: 1px;
+  }
+
+  .sb-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: stretch;
+  }
+
+  .sb-features { display: contents; }
+
+  .sb-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 28px;
+    padding: 56px 60px;
+    opacity: 0;
+    transition: background 0.3s, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .sb-feature::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 5px;
+    background: var(--yellow);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .sb-feature:hover { background: rgba(255,255,255,0.18); border-color: var(--yellow); }
+  .sb-feature:hover::before { opacity: 1; }
+  .sb-feature.in { animation: sbFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+  @keyframes sbFadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .sb-feature-top {
+    display: flex; align-items: center; gap: 28px;
+  }
+
+  .sb-feature-icon {
+    font-size: 60px; flex-shrink: 0; line-height: 1;
+  }
+
+  .sb-feature-title {
+    font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.15;
+    color: #FFFFFF;
+  }
+
+  .sb-feature-desc {
+    font-size: 24px; font-weight: 500; line-height: 1.65;
+    color: rgba(255,255,255,0.9);
+  }
+  .sb-feature-desc strong { color: var(--yellow); font-weight: 800; }
+
+  .sb-right { display: none; }
+</style>
+</head>
+<body>
+
+<div class="scale-root" id="scaleRoot">
+  <div class="slides-wrapper">
+
+    <!-- ══ SLIDE 1 — HERO ══ -->
+    <div class="slide active" id="slide-1">
+      <div class="bg">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-white" style="width:900px;height:900px;top:-300px;left:-300px;"></div>
+        <div class="bg-glow-yellow" style="width:700px;height:700px;bottom:-200px;right:-100px;"></div>
+        <div class="bg-ring" style="width:1000px;height:1000px;top:-400px;right:-400px;"></div>
+        <div class="bg-ring" style="width:600px;height:600px;top:-200px;right:-200px;"></div>
+      </div>
+
+      <div class="s1-badge">
+        <div class="s1-badge-dot"></div>
+        Respublikadagi eng yirik maktablar tarmog'i
+      </div>
+
+      <div class="s1-wordmark">
+        <span class="s1-line1">REGISTON</span>
+        <span class="s1-line2">XUSUSIY</span>
+        <span class="s1-line3">MAKTABI</span>
+      </div>
+
+      <div class="s1-divider"></div>
+
+      <p class="s1-tagline">
+        Biz bolalarni o'zbekona muhitda<br>zamonaviy fikrlaydigan qilib o'stiramiz
+      </p>
+
+      <div class="s1-stats">
+        <div class="s1-stat">
+          <span class="s1-stat-num"><span class="cu" data-t="12" data-s="+">12+</span></span>
+          <span class="s1-stat-label">Yil tajriba</span>
+        </div>
+        <div class="s1-stat">
+          <span class="s1-stat-num"><span class="cu" data-t="1000" data-s="+">1000+</span></span>
+          <span class="s1-stat-label">Mutaxassis o'qituvchi</span>
+        </div>
+        <div class="s1-stat">
+          <span class="s1-stat-num"><span class="cu" data-t="3000" data-s="+">3000+</span></span>
+          <span class="s1-stat-label">O'quvchi</span>
+        </div>
+        <div class="s1-stat">
+          <span class="s1-stat-num"><span class="cu" data-t="6" data-s=" ta">6 ta</span></span>
+          <span class="s1-stat-label">Maktab O'zbekiston bo'ylab</span>
+        </div>
+      </div>
+
+      <div class="page-num">01 / 06</div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- ══ SLIDE 2 — AGENDA ══ -->
+    <div class="slide" id="slide-2">
+      <div class="bg">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-white" style="width:800px;height:800px;top:-200px;left:-200px;"></div>
+        <div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:200px;"></div>
+        <div class="bg-ring" style="width:1000px;height:1000px;bottom:-400px;right:-400px;"></div>
+      </div>
+
+      <div class="s2-wrap">
+        <!-- Left: Title -->
+        <div class="s2-left">
+          <div class="s2-eyebrow">Bugungi taqdimot</div>
+          <h1 class="s2-title">Taqdimot<br><span class="yellow">Rejasi</span></h1>
+          <div class="s2-line"></div>
+        </div>
+
+        <!-- Right: Items -->
+        <div class="s2-right">
+          <div class="s2-item">
+            <span class="s2-num">01</span>
+            <span class="s2-icon">🏛️</span>
+            <span class="s2-text">Registon Ta'lim Loyihasi haqida</span>
+            <span class="s2-dot"></span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">02</span>
+            <span class="s2-icon">🎯</span>
+            <span class="s2-text">O'qituvchilarni yollash tizimi</span>
+            <span class="s2-dot"></span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">03</span>
+            <span class="s2-icon">📚</span>
+            <span class="s2-text">O'qitish tizimi</span>
+            <span class="s2-dot"></span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">04</span>
+            <span class="s2-icon">✅</span>
+            <span class="s2-text">Va'damizni qanday bajardik</span>
+            <span class="s2-dot"></span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">05</span>
+            <span class="s2-icon">🏆</span>
+            <span class="s2-text">Yutuq va natijalar</span>
+            <span class="s2-dot"></span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">06</span>
+            <span class="s2-icon">📋</span>
+            <span class="s2-text">Narxlar va shartnoma</span>
+            <span class="s2-dot"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-num">02 / 06</div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- ══ SLIDE 3 — LOYIHA ══ -->
+    <div class="slide" id="slide-3">
+      <div class="bg">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-white" style="width:900px;height:900px;top:-200px;left:-100px;"></div>
+        <div class="bg-glow-yellow" style="width:600px;height:600px;bottom:-150px;right:-100px;"></div>
+      </div>
+
+      <!-- LEFT: sarlavha + matn -->
+      <div class="s3-left">
+        <div class="s3-eyebrow">03 — Brend hikoyasi</div>
+        <h1 class="s3-title">"Registon"<br><span class="yellow">brendi</span><br>hikoyasi</h1>
+        <div class="s3-divider"></div>
+        <div class="s3-blocks">
+          <div class="s3-block">
+            <div class="s3-block-text">
+              "Registon" brendiga <strong>2014-yilda</strong> Avazbek Tulovov tomonidan asos solingan.
+              Hozirda O'zbekistondagi <strong>eng yirik ta'lim loyihalaridan</strong> biri bo'lib,
+              <strong>50 dan ortiq</strong> o'quv markaz va <strong>6 ta yirik maktabni</strong> birlashtiradi.
+            </div>
+          </div>
+          <div class="s3-block">
+            <div class="s3-block-text">
+              Loyihaning Farg'onadagi ilk qadami <strong>o'quv markaz sifatida</strong> boshlanib,
+              <strong>3 yil</strong> ichida <strong>20,000 dan ortiq</strong> talabaga ta'lim berishga erishdi.
+            </div>
+          </div>
+          <div class="s3-block">
+            <div class="s3-block-text">
+              Registon Maktabi <strong>Farg'ona filiali</strong> birinchi o'quv yilning o'zidayoq
+              <strong>700 dan ortiq</strong> o'quvchilar bilan faoliyatni olib bordi.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: asoschi rasm -->
+      <div class="s3-center">
+        <img class="s3-founder-img"
+          src="https://i.postimg.cc/SNjsZXX7/Untitled-design-3.png"
+          alt="Avazbek Tulovov" />
+        <div class="s3-founder-name">
+          <div class="s3-founder-name-text">Avazbek Tulovov</div>
+          <div class="s3-founder-name-sub">Registon Ta'lim Loyihasi asoschisi</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: raqamlar -->
+      <div class="s3-right">
+        <div class="s3-stat-row">
+          <div class="s3-stat-num">2014</div>
+          <div class="s3-stat-label">📅 Tashkil etilgan yil</div>
+        </div>
+        <div class="s3-stat-row">
+          <div class="s3-stat-num">2500+</div>
+          <div class="s3-stat-label">🎓 Loyihadagi jami mutaxassislar</div>
+        </div>
+        <div class="s3-stat-row">
+          <div class="s3-stat-num">700+</div>
+          <div class="s3-stat-label">📚 Farg'ona filial o'quvchilari</div>
+        </div>
+        <div class="s3-stat-row">
+          <div class="s3-stat-num">6 ta</div>
+          <div class="s3-stat-label">🏫 Maktab O'zbekiston bo'ylab</div>
+        </div>
+      </div>
+
+      <div class="page-num">03 / 06</div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- ══ SLIDE 4 — O'QITUVCHILARNI YOLLASH ══ -->
+    <div class="slide" id="slide-4">
+      <div class="bg">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-white" style="width:700px;height:700px;top:-200px;left:-200px;"></div>
+        <div class="bg-glow-yellow" style="width:600px;height:600px;bottom:-200px;right:-100px;"></div>
+        <div class="bg-ring" style="width:1000px;height:1000px;bottom:-400px;right:-400px;"></div>
+      </div>
+
+      <!-- LEFT -->
+      <div class="s4-left">
+        <div class="s4-eyebrow">04 — Kadrlar siyosati</div>
+        <h1 class="s4-title">O'qituvchilarni<br><span class="yellow">yollash</span><br>tizimi</h1>
+        <div class="s4-divider"></div>
+        <div class="s4-steps">
+          <div class="s4-step">
+            <div class="s4-step-num">1</div>
+            <div class="s4-step-text">Maktabning talablari</div>
+          </div>
+          <div class="s4-step">
+            <div class="s4-step-num">2</div>
+            <div class="s4-step-text">HR direktor bilan suhbat</div>
+          </div>
+          <div class="s4-step">
+            <div class="s4-step-num">3</div>
+            <div class="s4-step-text">Metodistlar tekshiruvi</div>
+          </div>
+          <div class="s4-step">
+            <div class="s4-step-num">4</div>
+            <div class="s4-step-text">Yillik rasmiy shartnoma</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Cards -->
+      <div class="s4-right">
+        <div class="s4-cards" id="s4Cards">
+
+          <div class="s4-card" data-index="0">
+            <div class="s4-card-num">📋</div>
+            <div class="s4-card-body">
+              <div class="s4-card-label">Bosqich 01</div>
+              <div class="s4-card-title">Maktabning talablari</div>
+            </div>
+            <div class="s4-card-arrow">→</div>
+          </div>
+
+          <div class="s4-card-connector" data-index="c0"></div>
+
+          <div class="s4-card" data-index="1">
+            <div class="s4-card-num">🤝</div>
+            <div class="s4-card-body">
+              <div class="s4-card-label">Bosqich 02</div>
+              <div class="s4-card-title">HR direktor bilan suhbat</div>
+            </div>
+            <div class="s4-card-arrow">→</div>
+          </div>
+
+          <div class="s4-card-connector" data-index="c1"></div>
+
+          <div class="s4-card" data-index="2">
+            <div class="s4-card-num">🔍</div>
+            <div class="s4-card-body">
+              <div class="s4-card-label">Bosqich 03</div>
+              <div class="s4-card-title">Metodistlar tekshiruvi</div>
+            </div>
+            <div class="s4-card-arrow">→</div>
+          </div>
+
+          <div class="s4-card-connector" data-index="c2"></div>
+
+          <div class="s4-card" data-index="3">
+            <div class="s4-card-num">📝</div>
+            <div class="s4-card-body">
+              <div class="s4-card-label">Bosqich 04</div>
+              <div class="s4-card-title">Yillik rasmiy shartnoma</div>
+            </div>
+            <div class="s4-card-arrow">✓</div>
+          </div>
+
+          <button class="s4-next-btn" id="s4NextBtn" onclick="s4Next()">
+            <span id="s4BtnLabel">Keyingisi</span>
+            <span>→</span>
+          </button>
+
+        </div>
+      </div>
+
+      <div class="page-num">04 / 06</div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- ══ SLIDE 5 — O'QITISH TIZIMI ══ -->
+    <div class="slide" id="slide-5">
+      <div class="bg">
+        <div class="bg-grid"></div>
+        <div class="bg-glow-white" style="width:800px;height:800px;top:-300px;left:-200px;"></div>
+        <div class="bg-glow-yellow" style="width:600px;height:600px;bottom:-200px;right:-100px;"></div>
+        <div class="bg-ring" style="width:1100px;height:1100px;bottom:-400px;right:-400px;"></div>
+      </div>
+
+      <div class="s5-header">
+        <div class="s5-eyebrow">05 — O'qitish dasturi</div>
+        <h1 class="s5-title">O'qitish <span class="yellow">Tizimi</span></h1>
+        <div class="s5-line"></div>
+      </div>
+
+      <div class="s5-grid" id="s5Grid">
+
+        <!-- TOP — Boshlang'ich -->
+        <div class="s5-card s5-card-top" onclick="goToSchool('boshlangich')">
+          <div class="s5-card-emoji">🏫</div>
+          <div class="s5-card-body">
+            <div class="s5-card-grade">0 — 4-sinflar</div>
+            <div class="s5-card-name">Boshlang'ich Maktab</div>
+            <div class="s5-card-desc">Asosiy bilim va ko'nikmalar poydevori quriladi</div>
+          </div>
+          <div class="s5-card-cta">→</div>
+        </div>
+
+        <!-- BOTTOM LEFT — O'rta -->
+        <div class="s5-card" onclick="goToSchool('orta')">
+          <div class="s5-card-emoji">📚</div>
+          <div class="s5-card-body">
+            <div class="s5-card-grade">5 — 8-sinflar</div>
+            <div class="s5-card-name">O'rta Maktab</div>
+            <div class="s5-card-desc">Chuqur fanlar va amaliy loyihalar</div>
+          </div>
+          <div class="s5-card-cta">→</div>
+        </div>
+
+        <!-- BOTTOM RIGHT — Litsey -->
+        <div class="s5-card" onclick="goToSchool('litsey')">
+          <div class="s5-card-emoji">🎓</div>
+          <div class="s5-card-body">
+            <div class="s5-card-grade">9 — 11-sinflar</div>
+            <div class="s5-card-name">Litsey</div>
+            <div class="s5-card-desc">Oliy ta'limga tayyorgarlik va ixtisoslashuv</div>
+          </div>
+          <div class="s5-card-cta">→</div>
+        </div>
+
+      </div>
+
+      <div class="page-num">05 / 06</div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- ══ BOSHLANG'ICH MAKTAB SLAYDLARI (sb1–sb14) ══ -->
+
+    <!-- SB1: #1 Kichik sinf xonalari + #2 Yordamchi o'qituvchi -->
+    <div class="slide sb-slide" id="sb1">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">1 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🏫</div>
+              <div class="sb-feature-title">24 tagacha o'quvchi — kichik sinf xonalari</div></div>
+              <div class="sb-feature-desc">Har bir o'quvchi o'qituvchining <strong>to'liq diqqatini</strong> oladi. Kichik guruh bolaning savolini berishga, fikr yuritishga va <strong>o'z sur'atida rivojlanishiga</strong> imkon beradi — ommaviy maktablarda bu noyob afzallik.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🤝</div>
+              <div class="sb-feature-title">0–1-sinf uchun yordamchi o'qituvchi</div></div>
+              <div class="sb-feature-desc">Birinchi sinf — ko'p narsa yangi, ko'p narsa qo'rqinchli. Yordamchi o'qituvchi shu paytda <strong>yonida bo'ladi:</strong> tushuntiradi, yo'naltiradi, ishonch beradi. Hech bir savol javobsiz qolmaydi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">01</div>
+          <div class="sb-right-title">Har bir<br>bola <span class="yl">ko'zga</span><br>ko'rinadi</div>
+          <div class="sb-right-tag">🏫 0 — 4-sinflar</div>
+          <div class="sb-right-desc">Kichik sinf — katta natija. Bolangiz olomonning ichida yo'qolmaydi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB2: #3 Ko'proq dars soatlari + #4 Stipendiyalar -->
+    <div class="slide sb-slide" id="sb2">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">2 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">📐</div>
+              <div class="sb-feature-title">Matematika, rus, ingliz, arab tili va AyTi — ko'proq soat</div></div>
+              <div class="sb-feature-desc">Kelajak uchun eng muhim fanlar <strong>chuqurroq va ko'proq</strong> o'qitiladi. Bolangiz maktabni tugatguncha <strong>4 til biluvchi, raqamli savodxon</strong> yosh avlod sifatida yetishadi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🏆</div>
+              <div class="sb-feature-title">2-sinfdan choraklik stipendiyalar</div></div>
+              <div class="sb-feature-desc">Yaxshi o'qish — <strong>moddiy rag'bat</strong> bilan taqdirlangan. Bolangiz bilimni qadrlay boshlaydi, <strong>o'z-o'zini motivatsiya</strong> qilishni erta o'rganadi va muvaffaqiyatga intilish odatga aylanadi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">02</div>
+          <div class="sb-right-title">Bilim +<br><span class="yl">Rag'bat</span><br>= Natija</div>
+          <div class="sb-right-tag">📐 Chuqur ta'lim</div>
+          <div class="sb-right-desc">To'g'ri fanlar, to'g'ri vaqt va to'g'ri undov — muvaffaqiyat formulasi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB3: #5 Nazorat imtihonlari + #6 Ota-onaga fidbek -->
+    <div class="slide sb-slide" id="sb3">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">3 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">📝</div>
+              <div class="sb-feature-title">Har oy nazorat imtihonlari</div></div>
+              <div class="sb-feature-desc">Bilim bo'shliqlarini <strong>o'z vaqtida</strong> aniqlash imkoni. Imtihon — jazo emas, <strong>o'sish xaritasi.</strong> Har oy natijalar ko'rinib turadi, ortda qolishga yo'l qo'yilmaydi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">💬</div>
+              <div class="sb-feature-title">2 hafta va oylik ota-ona fidbeki</div></div>
+              <div class="sb-feature-desc">Farzandingiz haqida <strong>aniq, to'liq va muntazam</strong> ma'lumot olasiz. Maktab bilan <strong>hamkorlikda</strong> tarbiyalash — bolaning har tomonlama rivojlanishini ta'minlaydi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">03</div>
+          <div class="sb-right-title">Siz <span class="yl">doim</span><br>xabardor<br>bo'lasiz</div>
+          <div class="sb-right-tag">💬 Shaffof muloqot</div>
+          <div class="sb-right-desc">Har 2 haftada bir marta o'qituvchi siz bilan gaplashadi — farzandingiz qanday, nima o'zgargan, nimaga e'tibor kerak.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB4: #7 Halol taomlanish + #8 Olimpiadaga tayyorlov -->
+    <div class="slide sb-slide" id="sb4">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">4 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🍽️</div>
+              <div class="sb-feature-title">3 mahal dietolog retsepti bo'yicha halol taom</div></div>
+              <div class="sb-feature-desc">Har kuni 3 mahal — <strong>dietolog tuzgan, halol</strong> menyu. Bola to'yib, sog'lom ovqatlanadi. Miya ishlaydi, e'tibor saqlanadi. Siz bu haqda bosh qotirmaysiz.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🥇</div>
+              <div class="sb-feature-title">3-sinfdan xalqaro olimpiadalarga tayyorlov</div></div>
+              <div class="sb-feature-desc">Iqtidorli bolalar <strong>erta aniqlanadi</strong> va xalqaro miqyosda sinovdan o'tkaziladi. Olimpiada sovrinlari — bolangizning kelajakdagi <strong>grant va universitetlarga</strong> kirishida kuchli afzallik.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">04</div>
+          <div class="sb-right-title">Sog'lom<br>tan — <span class="yl">kuchli</span><br>aql</div>
+          <div class="sb-right-tag">🥇 Xalqaro daraja</div>
+          <div class="sb-right-desc">Sog'lom ovqat — diqqatli bola. Diqqatli bola — olimpiadaga tayyor bola.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB5: #9 Tajribali o'qituvchilar + #10 Ekskursiyalar -->
+    <div class="slide sb-slide" id="sb5">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">5 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">👨‍🏫</div>
+              <div class="sb-feature-title">Tajribali o'qituvchilar jamoasi</div></div>
+              <div class="sb-feature-desc">Har bir o'qituvchi <strong>tanlov va sertifikatsiya</strong> dan o'tgan. Bolangiz faqat bilimdon emas, <strong>mehr-muhabbatli, pedagogik mahoratli</strong> ustozlar qo'lida tarbiyalanadi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🗺️</div>
+              <div class="sb-feature-title">Maktabdan tashqari ekskursiya va sayohatlar</div></div>
+              <div class="sb-feature-desc">Darslik bilan bir xil darajada muhim narsa — ko'rganlar, his qilganlar. Ekskursiyalar bolaga <strong>real hayot bilan muloqot</strong> qilishni o'rgatadi, yangi odamlar bilan tanishtiради va dunyoqarashini kengaytiradi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">05</div>
+          <div class="sb-right-title">Ko'rgan<br>bola <span class="yl">ko'proq</span><br>o'rganadi</div>
+          <div class="sb-right-tag">🗺️ Sinf + Dunyo</div>
+          <div class="sb-right-desc">Sinfdagi bilim + tashqaridagi tajriba — ikkalasi birga ishlaydi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB6: #11 Uyga vazifa soatlari + #12 Chuqurlashtirilgan fanlar -->
+    <div class="slide sb-slide" id="sb6">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">6 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">⏰</div>
+              <div class="sb-feature-title">Har kuni 1 soatlik uyga vazifa soatlari</div></div>
+              <div class="sb-feature-desc">Har kuni 1 soat — o'qituvchi nazoratida <strong>maktabda</strong> bajariladi. Uyga qaytganda bola dam olishga tayyor. Uyda vazifa qilish <strong>ixtiyoriy</strong> — majburiy emas.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">📚</div>
+              <div class="sb-feature-title">Chuqurlashtirilgan fanlarda sinf ikkiga bo'linadi</div></div>
+              <div class="sb-feature-desc">24 ta o'quvchili sinf chuqurlashtirilgan fanlarda <strong>12 tadan ikki guruhga</strong> ajratiladi. O'qituvchi uchun ham, bola uchun ham ancha qulay — har kim <strong>ko'proq e'tibor, ko'proq vaqt</strong> oladi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">06</div>
+          <div class="sb-right-title">Kechqurun<br><span class="yl">oila</span><br>vaqti</div>
+          <div class="sb-right-tag">⏰ Vazifa — maktabda</div>
+          <div class="sb-right-desc">Farzandingiz uyga kelib dam oladi. Siz bilan vaqt o'tkazadi. Daftar ochilmaydi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB7: #13 Maxsus darslik + #14 Edu-School Platformasi -->
+    <div class="slide sb-slide" id="sb7">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">7 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">📖</div>
+              <div class="sb-feature-title">Maxsus darslik va dastur asosida chuqurlashtirilgan ta'lim</div></div>
+              <div class="sb-feature-desc">Davlat darsligidan <strong>bir qadam oldinda.</strong> O'z metodologiyamiz asosida yozilgan darsliklar bolani <strong>tizimli fikrlashga, tahlil qilishga</strong> va ijodiy yondashishga o'rgatadi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">📱</div>
+              <div class="sb-feature-title">Edu-School orqali kunlik, haftalik, oylik baholarni kuzatish</div></div>
+              <div class="sb-feature-desc">Telefondagi bitta tugma — farzandingizning <strong>barcha baholari, davomati, o'sish dinamikasi.</strong> Hech narsa yashirilmaydi, hamma narsa <strong>shaffof va real vaqtda.</strong></div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">07</div>
+          <div class="sb-right-title">Hamma narsa<br><span class="yl">ko'rinib</span><br>turadi</div>
+          <div class="sb-right-tag">📱 Edu-School platforma</div>
+          <div class="sb-right-desc">Baho, davomat, o'sish — hammasi telefoningizda. Hech narsa ko'zdan qochib ketmaydi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB8: #15 Psixolog/Logoped + #16 HeadCoach -->
+    <div class="slide sb-slide" id="sb8">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">8 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🧠</div>
+              <div class="sb-feature-title">Psixolog va Logoped xizmatlari</div></div>
+              <div class="sb-feature-desc">Har bir bola o'ziga xos. <strong>Psixolog va logoped</strong> bolangizning ruhiy holatini, nutqini va xulqini kuzatib boradi — biror muammo bo'lsa, <strong>erta seziladi va hal qilinadi.</strong></div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">📈</div>
+              <div class="sb-feature-title">O'qituvchilar malakasini doimiy oshirish — HeadCoach tizimi</div></div>
+              <div class="sb-feature-desc">Ustoz har doim o'sib boradi. <strong>HeadCoach tizimi</strong> orqali o'qituvchilar yangi metodlarni o'rganadi — bolangiz <strong>doim ilg'or pedagog</strong> tomonidan o'qitilishini kafolatlaydi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">08</div>
+          <div class="sb-right-title">Bola<br>ichidan <span class="yl">ham</span><br>kuchli bo'lsin</div>
+          <div class="sb-right-tag">🧠 Psixolog & Logoped</div>
+          <div class="sb-right-desc">Bilimli bo'lish yetarli emas — ruhiy jihatdan ham mustahkam bo'lishi kerak.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB9: #17 Saralash suhbati + #18 Loyihaviy ta'lim -->
+    <div class="slide sb-slide" id="sb9">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">9 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🔍</div>
+              <div class="sb-feature-title">Bolalarni suhbat asosida saralab olish</div></div>
+              <div class="sb-feature-desc">Maktabimizga <strong>hamma emas, moslar</strong> qabul qilinadi. Bu sinfni <strong>bir xil motivatsiyali, o'qishga ishtiyoqli</strong> bolalar to'ldirishini ta'minlaydi — muhit o'zi o'stiradi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🔬</div>
+              <div class="sb-feature-title">3–4-sinflar uchun loyihaviy ta'lim dasturi</div></div>
+              <div class="sb-feature-desc">Bilim — amalda sinab ko'rilgandagina o'zlashadi. Loyihaviy ta'lim orqali bolalar <strong>muammo hal qilish, jamoaviy ish va taqdimot ko'nikmalarini</strong> erta egallaydi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">09</div>
+          <div class="sb-right-title">To'g'ri<br><span class="yl">muhit</span>,<br>to'g'ri o'sish</div>
+          <div class="sb-right-tag">🔬 Amaliy ta'lim</div>
+          <div class="sb-right-desc">Bola muammo topadi, guruh bilan yechim izlaydi, natijani taqdim etadi. Mana shu — haqiqiy ko'nikma.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB10: #19 Xorijiy sayohatlar + #20 Tarbiya darslari -->
+    <div class="slide sb-slide" id="sb10">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">10 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">✈️</div>
+              <div class="sb-feature-title">3-sinfdan xorijiy davlatlarga sayohatlar</div></div>
+              <div class="sb-feature-desc">Bola uchun <strong>dunyoni ko'rish</strong> — eng katta ta'lim. Xorijiy sayohatlar bolaning <strong>tili, madaniyati va ufqini</strong> kengaytiradi, jasorat va mustaqillikni erta shakllantiradi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🌱</div>
+              <div class="sb-feature-title">Haftada bir marotaba tarbiya darslari</div></div>
+              <div class="sb-feature-desc">Bilim bilan birga <strong>axloq va qadriyatlar</strong> ham o'qitiladi. Tarbiya darslarida bolalar <strong>hurmat, mas'uliyat, halollik</strong> kabi insoniy fazilatlarni tizimlashtirilgan holda o'zlashtirishadi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">10</div>
+          <div class="sb-right-title">Bilimli<br>va <span class="yl">axloqli</span><br>avlod</div>
+          <div class="sb-right-tag">✈️ Global ufq</div>
+          <div class="sb-right-desc">Dunyo ko'rgan va qadriyatli bola — ota-onaning eng katta orzusi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB11: #21 Intizom tartibi + #22/#23 Sport -->
+    <div class="slide sb-slide" id="sb11">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">11 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">⚖️</div>
+              <div class="sb-feature-title">Noto'g'ri xulqli o'quvchilarni chetlashtirish tartibi</div></div>
+              <div class="sb-feature-desc">Intizomni <strong>buzgan o'quvchi</strong> maktabdan chiqariladi. Oddiy qoida, lekin ta'siri katta — sinf doim tinch, o'qishga qulay va <strong>hurmat muhitida</strong> saqlanadi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🥋</div>
+              <div class="sb-feature-title">O'g'il va qiz bolalar uchun taekwondo + qizlar gimnastikasi</div></div>
+              <div class="sb-feature-desc">Jismoniy tarbiya — yo'nalishga qarab. O'g'il bolalar <strong>taekwondo</strong> orqali kuch va intizom oladi, qiz bolalar <strong>gimnastika</strong> orqali plastika va muvozanat ustida ishlaydi. Har biri o'ziga mos sportda rivojlanadi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">11</div>
+          <div class="sb-right-title">Tinch sinf,<br><span class="yl">kuchli</span><br>tanlar</div>
+          <div class="sb-right-tag">🥋 Intizom & Sport</div>
+          <div class="sb-right-desc">Intizomli muhit — bola e'tibor bilan o'qiydi. Sport — jismi baquvvat bo'ladi.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB12: #24 Shaxmat + #25 Robototexnika -->
+    <div class="slide sb-slide" id="sb12">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">12 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">♟️</div>
+              <div class="sb-feature-title">Shaxmat to'garagi</div></div>
+              <div class="sb-feature-desc">Shaxmat — <strong>mantiqiy fikrlash, sabr va strategik rejalashtirish</strong> maktabi. Tadqiqotlar ko'rsatadiki, shaxmat o'ynaydigan bolalar matematika va o'qishda <strong>sezilarli yutuqlarga</strong> erishadi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🤖</div>
+              <div class="sb-feature-title">Robototexnika to'garagi</div></div>
+              <div class="sb-feature-desc">Kelajakning tili — <strong>kod va mexanika.</strong> Bolangiz robototexnika orqali <strong>muhandislik tafakkuri, ijodkorlik</strong> va jamoaviy loyiha ishlarini o'rganadi. Ertangi texnologiyalarga bugun tayyor bo'ladi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">12</div>
+          <div class="sb-right-title">Aqlli<br><span class="yl">o'yin</span>,<br>katta kelajak</div>
+          <div class="sb-right-tag">🤖 STEM to'garaklar</div>
+          <div class="sb-right-desc">Shaxmat + Robototexnika = mantiq, ijod va kelajak uchun tayyorlik.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB13: #26 Kamondan o'q otish + #27 Ot sporti -->
+    <div class="slide sb-slide" id="sb13">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">13 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🏹</div>
+              <div class="sb-feature-title">Kamondan o'q otish</div></div>
+              <div class="sb-feature-desc">Noyob sport turi — <strong>diqqat, nafas nazorati va ruhiy barqarorlik</strong> ni bir vaqtda rivojlantiradi. Kamondan o'q otish bolalarga <strong>maqsadga qaratilgan sabr</strong> va o'z-o'zini boshqarishni o'rgatadi.</div>
+          </div>
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🐎</div>
+              <div class="sb-feature-title">Ot sporti</div></div>
+              <div class="sb-feature-desc">Ot bilan muloqot — <strong>mas'uliyat, jasorat va hayvonlarga muhabbat</strong> ning eng kuchli maktabi. Ot sporti bolaning <strong>muvozanat, ishonch va irodasini</strong> mustahkamlaydi.</div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">13</div>
+          <div class="sb-right-title">Noyob<br><span class="yl">sport</span>,<br>kuchli iroda</div>
+          <div class="sb-right-tag">🏹 Eksklyuziv to'garaklar</div>
+          <div class="sb-right-desc">Boshqa maktablarda yo'q. Faqat Registonda — farzandingiz uchun.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+    <!-- SB14: #28 Suzish -->
+    <div class="slide sb-slide" id="sb14">
+      <div class="bg"><div class="bg-grid"></div><div class="bg-glow-yellow" style="width:500px;height:500px;bottom:-150px;right:-100px;"></div></div>
+      <div class="sb-breadcrumb">
+        <button class="sb-breadcrumb-back" onclick="goTo(4)">← Boshlang'ich Maktab</button>
+        <span class="sb-breadcrumb-sep">/</span>
+        <span class="sb-breadcrumb-cur">0–4-Sinflar</span>
+      </div>
+      <div class="sb-counter">14 / 14</div>
+      <div class="sb-body">
+        <div class="sb-features">
+          <div class="sb-feature">
+            <div class="sb-feature-top"><div class="sb-feature-icon">🏊</div>
+              <div class="sb-feature-title">Suzish</div></div>
+              <div class="sb-feature-desc">Suzish — <strong>hayotiy ko'nikma</strong> va to'liq jismoniy rivojlanish. Nafas, koordinatsiya, bardoshlilik — hammasi bir vaqtda o'sadi. Bolangiz <strong>suvdan qo'rqmaydi,</strong> aksincha — sevadi.</div>
+          </div>
+          <div class="sb-feature" style="background:rgba(255,222,89,0.07); border-color:rgba(255,222,89,0.2);">
+            <div class="sb-feature-top"><div class="sb-feature-icon">⭐</div>
+              <div class="sb-feature-title" style="color:var(--yellow);">Hammasi bir joyda</div></div>
+              <div class="sb-feature-desc">Bilim, sport, san'at, texnologiya, sog'liq, axloq — <strong>barchasi bitta maktabda.</strong> Bu oddiy maktab emas — farzandingiz uchun <strong>to'liq muhit.</strong></div>
+          </div>
+        </div>
+        <div class="sb-right">
+          <div class="sb-right-eyebrow">Boshlang'ich Maktab</div>
+          <div class="sb-right-bignum">14</div>
+          <div class="sb-right-title">To'liq<br><span class="yl">rivojlanish</span><br>bir joyda</div>
+          <div class="sb-right-tag">🏊 Kompleks ta'lim</div>
+          <div class="sb-right-desc">Boshqa maktablarda bu narsalarni alohida-alohida izlaysiz. Bu yerda — barchasi bir joyda.</div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="bottom-bar-fill"></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Navigation inside scale-root -->
+
+<script>
+  /* ── Scale ── */
+  function scale() {
+    var r = document.getElementById('scaleRoot');
+    var s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    r.style.transform = 'scale('+s+')';
+    r.style.left = ((window.innerWidth  - 1920*s)/2)+'px';
+    r.style.top  = ((window.innerHeight - 1080*s)/2)+'px';
+  }
+  scale();
+  window.addEventListener('resize', scale);
+
+  /* ── Slide 4 card stepper ── */
+  var s4Step = -1;
+
+  /* ── Slide 5 ── */
+  function s5Init() {
+    var cards = document.querySelectorAll('#s5Grid .s5-card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('visible');
+      cards[i].style.opacity = '0';
+      cards[i].style.animation = 'none';
+    }
+    setTimeout(function() {
+      for (var i = 0; i < cards.length; i++) {
+        (function(idx) {
+          setTimeout(function() {
+            cards[idx].style.animation = 'none';
+            cards[idx].offsetHeight;
+            cards[idx].style.animation = '';
+            cards[idx].classList.add('visible');
+          }, idx * 120);
+        })(i);
+      }
+    }, 200);
+  }
+
+  function goToSchool(type) {
+    if (type === 'boshlangich') { goTo(5); } // sb1 = index 5
+    else { alert(type + ' maktabi slaydlari tez orada!'); }
+  }
+
+  function sbInit(slideEl) {
+    var features = slideEl.querySelectorAll('.sb-feature');
+    for (var i = 0; i < features.length; i++) {
+      features[i].classList.remove('in');
+      features[i].style.opacity = '0';
+      features[i].style.animation = 'none';
+    }
+    features.forEach(function(el, idx) {
+      (function(el, delay) {
+        setTimeout(function() {
+          el.style.animation = 'none';
+          el.offsetHeight;
+          el.style.animation = '';
+          el.classList.add('in');
+        }, 200 + delay * 150);
+      })(el, idx);
+    });
+  }
+
+  function s4Init() {
+    s4Step = 0;
+    var els = document.querySelectorAll('#s4Cards .s4-card, #s4Cards .s4-card-connector');
+    for (var i = 0; i < els.length; i++) {
+      els[i].classList.remove('revealed');
+      els[i].style.opacity = '0';
+      els[i].style.animation = 'none';
+    }
+    // 1-bosqichni darhol ko'rsat
+    setTimeout(function() {
+      var cards = document.querySelectorAll('#s4Cards .s4-card');
+      cards[0].style.animation = 'none';
+      cards[0].offsetHeight;
+      cards[0].style.animation = '';
+      cards[0].classList.add('revealed');
+    }, 300);
+    var btn = document.getElementById('s4NextBtn');
+    if (!btn) return;
+    btn.classList.remove('visible', 'done');
+    btn.style.opacity = '0';
+    document.getElementById('s4BtnLabel').textContent = 'Keyingisi';
+    setTimeout(function() { btn.classList.add('visible'); }, 600);
+  }
+
+  function s4Next() {
+    var cards = document.querySelectorAll('#s4Cards .s4-card');
+    var connectors = document.querySelectorAll('#s4Cards .s4-card-connector');
+    if (s4Step >= cards.length - 1) return;
+    s4Step++;
+
+    var card = cards[s4Step];
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = '';
+    card.classList.add('revealed');
+
+    if (s4Step < connectors.length) {
+      (function(idx) {
+        setTimeout(function() {
+          var conn = connectors[idx];
+          conn.style.animation = 'none';
+          conn.offsetHeight;
+          conn.style.animation = '';
+          conn.classList.add('revealed');
+        }, 380);
+      })(s4Step);
+    }
+
+    var btn = document.getElementById('s4NextBtn');
+    if (s4Step >= cards.length - 1) {
+      document.getElementById('s4BtnLabel').textContent = 'Tugadi ✓';
+      setTimeout(function() { btn.classList.add('done'); }, 700);
+    }
+  }
+
+  /* ── Slides ── */
+  var slides = Array.from(document.querySelectorAll('.slide'));
+  var current = 0;
+
+  var wrapper = document.querySelector('.slides-wrapper');
+
+  var prevBtn = document.createElement('div');
+  prevBtn.className = 'nav-arrow left';
+  prevBtn.innerHTML = '&#8592;';
+  prevBtn.onclick = function() { goTo(current - 1); };
+  wrapper.appendChild(prevBtn);
+
+  var nextBtn = document.createElement('div');
+  nextBtn.className = 'nav-arrow right';
+  nextBtn.innerHTML = '&#8594;';
+  nextBtn.onclick = function() { goTo(current + 1); };
+  wrapper.appendChild(nextBtn);
+
+  var dotsEl = document.createElement('div');
+  dotsEl.className = 'nav-dots';
+  wrapper.appendChild(dotsEl);
+
+  slides.forEach(function(_, i) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (i===0 ? ' active' : '');
+    d.onclick = function() { goTo(i); };
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= slides.length) return;
+
+    slides[current].classList.remove('active');
+    document.querySelectorAll('.nav-dot')[current].classList.remove('active');
+
+    current = idx;
+    var slide = slides[current];
+
+    slide.classList.remove('active');
+    slide.offsetHeight;
+    slide.classList.add('active');
+    document.querySelectorAll('.nav-dot')[current].classList.add('active');
+
+    var fill = slide.querySelector('.bottom-bar-fill');
+    if (fill) { fill.style.animation='none'; fill.offsetHeight; fill.style.animation=''; }
+
+    slide.querySelectorAll('.s4-step').forEach(function(el) {
+      el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+    });
+
+    if (current === 3) { s4Init(); }
+    if (current === 4) { s5Init(); }
+    if (current >= 5) { sbInit(slide); }
+
+    slide.querySelectorAll('.cu[data-t]').forEach(function(el) {
+      var t = parseInt(el.dataset.t), sf = el.dataset.s||'';
+      var dur = 1800, t0 = performance.now();
+      (function step(now) {
+        var p = Math.min((now-t0)/dur, 1);
+        var val = p===1 ? t : Math.floor((1-Math.pow(2,-10*p))*t);
+        el.textContent = val+sf;
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    goTo(current - 1);
+  });
+
+  setTimeout(function() { goTo(0); }, 400);
+</script>
+</body>
+</html>
